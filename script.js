@@ -1,8 +1,8 @@
-// create grid
 const grid = document.querySelector('.grid')
 const cells = []
 const activateBtn = document.getElementById('activateButton')
 
+// create grid
 const createBoard = () => {
     for (let i = 0; i < 25; i++) {
         const cell = document.createElement('div')
@@ -53,3 +53,6 @@ grid.addEventListener('mouseover', (e) => {
 })
 
 createBoard()
+
+// el hover state funciona pero al momento de hacer el hover la celda queda con el color de hover y no con el color original
+// y deja de funcionar el hover
