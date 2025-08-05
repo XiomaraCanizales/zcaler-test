@@ -34,7 +34,7 @@ h1 {
     border: 1px solid var(--primary-color);
 }
 
-#activateButton {
+#activateButton, #resetButton {
     margin-top: 2rem;
     padding: 1rem 2rem;
     font-size: 1rem;
@@ -47,7 +47,8 @@ h1 {
     font-weight: 600;
 }
 
-#activateButton:hover {
+#activateButton:hover,
+#resetButton:hover {
     background-color: #e64ea9;
 }
 
