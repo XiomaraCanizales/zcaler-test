@@ -1,6 +1,7 @@
 const grid = document.querySelector('.grid')
 const cells = []
 const activateBtn = document.getElementById('activateButton')
+const resetBtn = document.getElementById('resetButton')
 
 // create grid
 const createBoard = () => {
@@ -10,6 +11,9 @@ const createBoard = () => {
         cells.push(cell)
     }
 }
+
+// initialize the board
+createBoard()
 
 // random color 
 activateBtn.addEventListener('click', () => {
@@ -34,25 +38,35 @@ activateBtn.addEventListener('click', () => {
         // setting data attribute
         cell.dataset.currentColor = dataColor
     })
-})
 
-// hover state
-grid.addEventListener('mouseover', (e) => {
-    const cell = e.target
-    if (cell.classList.contains('cell')) {
-        const currentColor= cell.dataset.currentColor
-        // remove existing classes
-        cell.classList.remove('hover-white', 'hover-yellow')
-        // apply hover class
-        if (currentColor === 'white') {
-            cell.classList.add('hover-yellow')
-        } else if (currentColor === 'yellow') {
-            cell.classList.add('hover-white')
+    // add hover effect
+    grid.addEventListener('mouseover', (e) => {
+        const cell = e.target
+        if (cell.classList.contains('cell')) {
+            const currentColor = cell.dataset.currentColor
+            if (currentColor === 'white') {
+                cell.classList.add('hover-yellow')
+            } else {
+                cell.classList.add('hover-white')
+            }
         }
-    }
+    }) 
+    // remove hover effect
+    grid.addEventListener('mouseout', (e) => {
+        const cell = e.target
+        if (cell.classList.contains('cell')) {
+            cell.classList.remove('hover-yellow', 'hover-white')
+        }
+    }) 
 })
 
-createBoard()
-
-// el hover state funciona pero al momento de hacer el hover la celda queda con el color de hover y no con el color original
-// y deja de funcionar el hover
+// reset colors
+resetBtn.addEventListener('click', () => {
+    const cellsAll = document.querySelectorAll('.cell')
+    cellsAll.forEach(cell => {
+        // removing existing classes
+        cell.classList.remove('white', 'yellow')
+        // resetting data attribute
+        cell.dataset.currentColor = ''
+    })
+})
