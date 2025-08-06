@@ -2,6 +2,9 @@
 :root {
     --primary-color: rgb(45, 33, 82);
     --secondary-color: #ff56bb;
+    --secondary-color-hover: #e64ea9;
+    --white-color: #f0f0f0;
+    --yellow-color: #E9B845;
 }
 * {box-sizing: border-box;}
 
@@ -12,7 +15,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: var(--white-color);
     font-family: "Poppins", sans-serif;
 }
 
@@ -49,15 +52,15 @@ h1 {
 
 #activateButton:hover,
 #resetButton:hover {
-    background-color: #e64ea9;
+    background-color: var(--secondary-color-hover);
 }
 
 /* specific cell colors */
-.white { background-color: white;}
+.white { background-color: var(--white-color); }
 
-.yellow { background-color: #E9B845; }
+.yellow { background-color: var(--yellow-color); }
 
 /* hover state */
-.hover-white { background-color: white;}
+.hover-white { background-color: var(--white-color); }
 
-.hover-yellow { background-color: #E9B845; }
+.hover-yellow { background-color: var(--yellow-color); }

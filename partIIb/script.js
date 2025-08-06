@@ -3,6 +3,13 @@ const cells = []
 const activateBtn = document.getElementById('activateButton')
 const resetBtn = document.getElementById('resetButton')
 
+// image variables
+let imageElement
+let imageCell = null
+let hoverCount = 0
+const counterDisplay = document.getElementById('counter')
+let gameActive = false
+
 // create grid
 const createBoard = () => {
     for (let i = 0; i < 25; i++) {
@@ -12,14 +19,21 @@ const createBoard = () => {
     }
 }
 
-// initialize the board
-createBoard()
+// start game
+const startGame = () => {
+    gameActive = true
+    hoverCount = 0
+    updateCounterDisplay()
 
-// random color 
-activateBtn.addEventListener('click', () => {
+    // remove image if it exists
+    if (imageElement && imageElement.parentNode) {
+        imageElement.parentNode.removeChild(imageElement)
+    }
+    imageCell = null
+
+    // same logic as before
     const cellsAll = document.querySelectorAll('.cell')
     cellsAll.forEach(cell => {
-        console.log('cell', cell)
         // randomly assign a color to each cell
         const randomColor = Math.random()
         let newColor
@@ -31,42 +45,64 @@ activateBtn.addEventListener('click', () => {
             newColor = 'yellow'
             dataColor= 'yellow'
         }
-        // removing existing classes
         cell.classList.remove('white', 'yellow')
-        // adding new class
         cell.classList.add(newColor)
-        // setting data attribute
         cell.dataset.currentColor = dataColor
     })
+    // add image to a random cell
+    const yellowCells = Array.from(document.querySelectorAll('.cell.yellow'))
+    if (yellowCells.length > 0) {
+        const randomIndex = Math.floor(Math.random() * yellowCells.length)
+        imageCell = yellowCells[randomIndex]
+        imageElement = document.createElement('img')   
+        imageElement.src = 'imagen-suplente.jpg' 
+        imageElement.style.display = 'none'
+        imageCell.appendChild(imageElement)
+    }
+}
 
-    // add hover effect
-    grid.addEventListener('mouseover', (e) => {
-        const cell = e.target
-        if (cell.classList.contains('cell')) {
-            const currentColor = cell.dataset.currentColor
-            if (currentColor === 'white') {
-                cell.classList.add('hover-yellow')
-            } else {
-                cell.classList.add('hover-white')
-            }
+// hover effect
+grid.addEventListener('mouseover', (e) => {
+    const cell = e.target.closest('.cell')
+    if (!cell || !gameActive) return 
+
+    const currentColor = cell.dataset.currentColor
+
+    if (cell === imageCell) {
+        gameActive = false
+
+        if (imageElement) {
+            imageElement.style.display = 'block'
+            imageElement.style.width = '100%'
+            counterDisplay.textContent = 'You found the treasure!'
         }
-    }) 
-    // remove hover effect
-    grid.addEventListener('mouseout', (e) => {
-        const cell = e.target
-        if (cell.classList.contains('cell')) {
-            cell.classList.remove('hover-yellow', 'hover-white')
+
+    } else {
+        cell.classList.remove('hover-yellow', 'hover-white')
+        if (currentColor === 'white') {
+            cell.classList.add('hover-yellow')
+            hoverCount++
+            updateCounterDisplay()
+        } else {
+            cell.classList.add('hover-white')
         }
-    }) 
+    }
+}) 
+
+grid.addEventListener('mouseout', (e) => {
+    const cell = e.target.closest('.cell')
+    if (cell.classList.contains('cell')) {
+        cell.classList.remove('hover-yellow', 'hover-white')
+    }
 })
 
-// reset colors
-resetBtn.addEventListener('click', () => {
-    const cellsAll = document.querySelectorAll('.cell')
-    cellsAll.forEach(cell => {
-        // removing existing classes
-        cell.classList.remove('white', 'yellow')
-        // resetting data attribute
-        cell.dataset.currentColor = ''
-    })
-})
+// update counter display
+const updateCounterDisplay = () => {
+    counterDisplay.textContent = `Hover Count: ${hoverCount}`
+}
+
+// initialize the board
+createBoard()
+
+// initialize game
+activateBtn.addEventListener('click', startGame)

@@ -19,7 +19,6 @@ createBoard()
 activateBtn.addEventListener('click', () => {
     const cellsAll = document.querySelectorAll('.cell')
     cellsAll.forEach(cell => {
-        console.log('cell', cell)
         // randomly assign a color to each cell
         const randomColor = Math.random()
         let newColor
